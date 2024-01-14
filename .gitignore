@@ -1,0 +1,8 @@
+.vs/*
+src/bin/Debug/*
+src/obj/*
+Example/bin/*
+Example/obj/*
+Tests-Integration/bin/*
+Tests-Integration/obj/*
+logs/*
