@@ -1,26 +1,26 @@
 # aspnet-request-response-interceptor
-Nuget middleware package to intercept request before sent do controller and response before send to cliente. This is util to automatically log requests and responses. An implementations was made and it can log method, url, endpoint, header, query, body, status code, both the request and the response.
+Nuget middleware package to intercept request before send do controller and response before send to cliente. This is util to automatically log requests and responses. An implementations was made and it can log method, url, endpoint, header, query, body, status code, both the request and the response.
 
 
 ## File Program.cs (net6.0)
 
 ```C#
 using RequestReponseInterceptor;
-using RequestReponseInterceptor.Implementations;
+using RequestReponseInterceptor.Implementations; //If you want to use my implmentation. If you will create yours, you can remove this.
 
 ```
 <br>
 
-Using class my class Interceptor (you can create your own. See on section [What it will do?](#What-it-will-do))
+Using my class Interceptor (you can create your own. See on section [How can I create my own Interceptor](#How-can-I-create-my-own-Interceptor))
 
 ```C#
 InterceptorOptions options = new InterceptorOptions(){
     //If you are using docker container logs, leave it enabled. It is going to agrupate whole request and reponse line and will write to logs in the end
-    WriteRequestAndResponseTogetherInTheEnd = true, 
+    WriteRequestAndResponseTogetherInTheEnd = true, //default true
 
     //If you are using docker container logs, leave it enabled. It will be easier to search by 'traceId'.
     //Look the image below. This is the data highlighted in yellow
-    WriteTraceIDBeforEachLine = true, 
+    WriteTraceIDBeforEachLine = true,  //default true
 };
 IInterceptor interceptor = new Interceptor(options);
 app.UseInterceptor(interceptor);
@@ -130,3 +130,6 @@ Finally you have to inject your class no `Program.cs`.
 YourClass interceptor = new YourClass();
 app.UseInterceptor(interceptor);
 ```
+
+This plugin will call your funcion `OnReceiveRequest` befor call your controller, and after the processing before send data to client (requester), it will call your funciont `OnSendResponse`.  
+The funcionts `SetRemoteIP` and `SetTraceId` will call before `OnReceiveRequest`.
