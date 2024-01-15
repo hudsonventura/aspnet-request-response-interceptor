@@ -10,8 +10,8 @@ Nuget middleware package to intercept request before send do controller and resp
 ## File Program.cs (net6.0)
 
 ```C#
-using RequestReponseInterceptor;
-using RequestReponseInterceptor.Implementations; //If you want to use my implmentation. If you will create yours, you can remove this.
+using RequestResponseInterceptor;
+using RequestResponseInterceptor.Implementations; //If you want to use my implmentation. If you will create yours, you can remove this.
 
 ```
 <br>
@@ -59,7 +59,7 @@ It will write to **console** and a **log file** (dir logs) all data of request a
 
 
 But you don't need to use my implementation. So you can create your own classe to log by you way.  
-In this case, just implements the interface `RequestReponseInterceptor.IInterceptor`.
+In this case, just implements the interface `RequestResponseInterceptor.IInterceptor`.
 
 ``` C#
 public interface IInterceptor
@@ -83,11 +83,11 @@ An a example of my implementation is at file `src.Implementations.Interceptor.cs
 
 # How can I create my own Interceptor?
 
-First, create a class and it implement the `RequestReponseInterceptor.IInterceptor` interface, like below.
+First, create a class and it implement the `RequestResponseInterceptor.IInterceptor` interface, like below.
 
 ```C#
 using System.Net;
-using RequestReponseInterceptor;
+using RequestResponseInterceptor;
 
 namespace YourNameSpace;
 

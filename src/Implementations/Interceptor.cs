@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using RequestReponseInterceptor;
+using RequestResponseInterceptor;
 
 
-namespace RequestReponseInterceptor.Implementations;
+namespace RequestResponseInterceptor.Implementations;
 
 public class Interceptor : IInterceptor
 {

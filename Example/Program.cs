@@ -1,7 +1,7 @@
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-using RequestReponseInterceptor;
-using RequestReponseInterceptor.Implementations;
+using RequestResponseInterceptor;
+using RequestResponseInterceptor.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 

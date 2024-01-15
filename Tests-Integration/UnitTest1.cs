@@ -18,31 +18,31 @@ public class UnitTest1
   
 
     [Fact]
-    public async Task RequestEmptyBody_ReponseEmptyBody() 
+    public async Task RequestEmptyBody_ResponseEmptyBody() 
     {
-        var result = await client.GetAsync($"/RequestEmptyBody_ReponseEmptyBody");
+        var result = await client.GetAsync($"/RequestEmptyBody_ResponseEmptyBody");
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);
     }
 
     [Fact]
-    public async Task RequestEmptyBody_ReponseWithSomeBody() 
+    public async Task RequestEmptyBody_ResponseWithSomeBody() 
     {
-        var result = await client.PostAsync("/RequestEmptyBody_ReponseWithSomeBody", GenerateContent());
+        var result = await client.PostAsync("/RequestEmptyBody_ResponseWithSomeBody", GenerateContent());
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);
     }
 
 
     [Fact]
-    public async Task RequestWithSomeBody_ReponseEmptyBody() 
+    public async Task RequestWithSomeBody_ResponseEmptyBody() 
     {
-        var result = await client.PostAsync($"/RequestWithSomeBody_ReponseEmptyBody", GenerateContent());
+        var result = await client.PostAsync($"/RequestWithSomeBody_ResponseEmptyBody", GenerateContent());
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);
     }
 
     [Fact]
-    public async Task RequestWithSomeBody_ReponseWithSomeBody() 
+    public async Task RequestWithSomeBody_ResponseWithSomeBody() 
     {
-        var result = await client.PostAsync($"/RequestWithSomeBody_ReponseWithSomeBody", GenerateContent());
+        var result = await client.PostAsync($"/RequestWithSomeBody_ResponseWithSomeBody", GenerateContent());
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);
     }
 
@@ -50,7 +50,7 @@ public class UnitTest1
     public async Task RequestWithQuery() 
     {
         var queryParams = new { parametro1 = "valor1", parametro2 = "valor2" };
-        string url = $"/RequestEmptyBody_ReponseEmptyBody?parametro1={queryParams.parametro1}&parametro2={queryParams.parametro2}";
+        string url = $"/RequestEmptyBody_ResponseEmptyBody?parametro1={queryParams.parametro1}&parametro2={queryParams.parametro2}";
         var result = await client.GetAsync(url);
 
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);

@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <PackageId>RequestReponseInterceptor</PackageId>
+    <PackageId>RequestResponseInterceptor</PackageId>
     <Version>1.0.0</Version>
     <Authors>Hudson Ventura</Authors>
     <Company>Hudson Ventura</Company>

@@ -8,26 +8,26 @@ public class TestController : ControllerBase
 {
 
 
-    [HttpGet("/RequestEmptyBody_ReponseEmptyBody")]
-    public IActionResult RequestEmptyBody_ReponseEmptyBody()
+    [HttpGet("/RequestEmptyBody_ResponseEmptyBody")]
+    public IActionResult RequestEmptyBody_ResponseEmptyBody()
     {
         return Ok();
     }
 
-    [HttpPost("/RequestEmptyBody_ReponseWithSomeBody")]
-    public IActionResult RequestEmptyBody_ReponseWithSomeBody()
+    [HttpPost("/RequestEmptyBody_ResponseWithSomeBody")]
+    public IActionResult RequestEmptyBody_ResponseWithSomeBody()
     {
         return Ok("Ok");
     }
 
-    [HttpPost("/RequestWithSomeBody_ReponseEmptyBody")]
-    public IActionResult RequestWithSomeBody_ReponseEmptyBody([FromBody] string teste)
+    [HttpPost("/RequestWithSomeBody_ResponseEmptyBody")]
+    public IActionResult RequestWithSomeBody_ResponseEmptyBody([FromBody] string teste)
     {
         return Ok();
     }
 
-    [HttpPost("/RequestWithSomeBody_ReponseWithSomeBody")]
-    public IActionResult RequestWithSomeBody_ReponseWithSomeBody([FromBody] string teste)
+    [HttpPost("/RequestWithSomeBody_ResponseWithSomeBody")]
+    public IActionResult RequestWithSomeBody_ResponseWithSomeBody([FromBody] string teste)
     {
         return Ok(teste);
     }

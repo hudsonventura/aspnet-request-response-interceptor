@@ -4,12 +4,12 @@ using System.Text;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
-using RequestReponseInterceptor;
-using RequestReponseInterceptor.Implementations;
+using RequestResponseInterceptor;
+using RequestResponseInterceptor.Implementations;
 
 
 
-namespace RequestReponseInterceptor;
+namespace RequestResponseInterceptor;
 
 
 public static class InterceptorMiddlewareExtensions

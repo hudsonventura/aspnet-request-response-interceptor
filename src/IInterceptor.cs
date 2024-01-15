@@ -5,7 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace RequestReponseInterceptor;
+namespace RequestResponseInterceptor;
 
 public interface IInterceptor
 {
