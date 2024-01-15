@@ -3,7 +3,7 @@ Nuget middleware package to intercept request before send do controller and resp
 
 <div align="center">
 
-![Teste](/assets/icon.png)
+![Teste](https://raw.githubusercontent.com/hudsonventura/aspnet-request-response-logger/main/assets/icon.png)
 
 </div>
 
