@@ -1,5 +1,5 @@
-# aspnet-request-response-interceptor
-Nuget middleware package to intercept request before send do controller and response before send to cliente. This is util to automatically log requests and responses. An implementations was made and it can log method, url, endpoint, header, query, body, status code, both the request and the response.
+# RequestResponseInterceptor
+Nuget middleware for ASP.NET Core package to intercept request before send do controller and response before send to cliente. This is util to automatically log requests and responses. An implementations was made and it can log method, url, endpoint, header, query, body, status code, both the request and the response.
 
 <div align="center">
 
