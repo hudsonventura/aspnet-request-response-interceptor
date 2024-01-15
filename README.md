@@ -14,7 +14,7 @@ using RequestResponseInterceptor;
 using RequestResponseInterceptor.Implementations; //If you want to use my implmentation. If you will create yours, you can remove this.
 
 ```
-<br>
+
 
 Using my class Interceptor (you can create your own. See on section [How can I create my own Interceptor](#How-can-I-create-my-own-Interceptor))
 
@@ -31,7 +31,7 @@ IInterceptor interceptor = new Interceptor(options);
 app.UseInterceptor(interceptor);
 
 ```
-<br>
+
 
 or this to default values of InterceptorOptions
 ```C#
@@ -39,7 +39,7 @@ IInterceptor interceptor = new Interceptor();
 app.UseInterceptor(interceptor);
 ```
 
-<br>
+
 
 or just
 ```C#
@@ -54,12 +54,12 @@ app.UseInterceptor();
 It will write to **console** and a **log file** (dir logs) all data of request and response, like this:
 
 
-![Teste](/assets/print1.png)
+![Print](https://raw.githubusercontent.com/hudsonventura/aspnet-request-response-interceptor/main/assets/print1.png)
 
 
 
 But you don't need to use my implementation. So you can create your own classe to log by you way.  
-In this case, just implements the interface `RequestResponseInterceptor.IInterceptor`.
+In this case, just implements the interface `RequestResponseInterceptor.IInterceptor`.  
 
 ``` C#
 public interface IInterceptor
@@ -77,9 +77,9 @@ public interface IInterceptor
     void SetTraceId(string traceId);
 }
 ```
-<br>
 
-An a example of my implementation is at file `src.Implementations.Interceptor.cs`. You can use it to get inspired and create your own implementation, saving data to disk, database, or calling other services.
+
+An a example of my implementation is at file `src.Implementations.Interceptor.cs`. You can use it to get inspired and create your own implementation, saving data to disk, database, or calling other services.  
 
 # How can I create my own Interceptor?
 
@@ -115,7 +115,8 @@ public class YourClass : IInterceptor
 }
 ```
 
-<br>
+
+
 Now you have to implement each function. If you don't want to use `SetTraceId` or `SetRemoteIP`, just add return like below. These are not necessary.
 
 ```C#
