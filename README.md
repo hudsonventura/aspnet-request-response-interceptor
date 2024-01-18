@@ -78,7 +78,6 @@ public interface IInterceptor
 }
 ```
 
-
 An a example of my implementation is at file `src.Implementations.Interceptor.cs`. You can use it to get inspired and create your own implementation, saving data to disk, database, or calling other services.  
 
 # How can I create my own Interceptor?
@@ -131,7 +130,30 @@ Now you have to implement each function. If you don't want to use `SetTraceId` o
     }
 ```
 
-Finally you have to inject your class no `Program.cs`.
+
+Or you can just implement the abstract class `AbstractInterceptor`, and implement the functions `OnReceiveRequest` and `OnSendResponse`, as below.  
+The `remoteIpAddress` and `SetTraceId` functions have been implemented for you.
+``` C#
+using RequestResponseInterceptor;
+
+namespace Example;
+
+public class MyInterceptor : AbstractInterceptor, IInterceptor
+{
+    public override void OnReceiveRequest(HttpRequest request)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnSendResponse(HttpResponse response, string body_string)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+```
+
+Finally you have to inject your class in the `Program.cs`.
 ```C#
 YourClass interceptor = new YourClass();
 app.UseInterceptor(interceptor);

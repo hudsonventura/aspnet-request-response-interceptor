@@ -11,7 +11,7 @@ using RequestResponseInterceptor;
 
 namespace RequestResponseInterceptor.Implementations;
 
-public class Interceptor : IInterceptor
+public class Interceptor : AbstractInterceptor, IInterceptor
 {
 
     DateTime startTime;
@@ -35,17 +35,7 @@ public class Interceptor : IInterceptor
     HttpRequest request;
     
     bool showTracerId = true;
-    string traceId;
-    public void SetTraceId(string traceId)
-    {
-        this.traceId = traceId;
-    }
 
-    IPAddress remoteIpAddress;
-    public void SetRemoteIP(IPAddress? remoteIpAddress)
-    {
-        this.remoteIpAddress = remoteIpAddress;
-    }
 
     public async void OnReceiveRequest(HttpRequest request)
     {
