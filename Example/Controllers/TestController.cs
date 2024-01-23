@@ -1,3 +1,4 @@
+using Tests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Tests.Controllers;
@@ -27,7 +28,7 @@ public class TestController : ControllerBase
     }
 
     [HttpPost("/RequestWithSomeBody_ResponseWithSomeBody")]
-    public IActionResult RequestWithSomeBody_ResponseWithSomeBody([FromBody] string teste)
+    public IActionResult RequestWithSomeBody_ResponseWithSomeBody([FromBody] ObjTest teste)
     {
         return Ok(teste);
     }
