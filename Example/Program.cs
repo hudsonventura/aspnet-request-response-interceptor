@@ -31,7 +31,7 @@ InterceptorOptions options = new InterceptorOptions(){
     //If you are using docker container logs, leave it enabled. It will be easier to search by 'traceId'
     WriteTraceIDBeforEachLine = true, 
 };
-IInterceptor interceptor = new Interceptor(options);
+IInterceptor interceptor = new InterceptorToTXTFile(options);
 app.UseInterceptor(interceptor);
 
 

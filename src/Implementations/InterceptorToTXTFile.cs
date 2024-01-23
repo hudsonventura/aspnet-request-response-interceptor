@@ -11,13 +11,13 @@ using RequestResponseInterceptor;
 
 namespace RequestResponseInterceptor.Implementations;
 
-public class Interceptor : AbstractInterceptor, IInterceptor
+public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
 {
 
     DateTime startTime;
     DateTime endTime;
 
-    public Interceptor()
+    public InterceptorToTXTFile()
     {
         //get ths options with the default values
         this.options = new InterceptorOptions();
@@ -27,7 +27,7 @@ public class Interceptor : AbstractInterceptor, IInterceptor
     LogWriter writer = new LogWriter();
 
     InterceptorOptions options;
-    public Interceptor(InterceptorOptions options){
+    public InterceptorToTXTFile(InterceptorOptions options){
         this.options = options;
     }
 
