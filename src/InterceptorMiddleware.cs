@@ -29,7 +29,7 @@ public class InterceptorMiddleware
 
     public InterceptorMiddleware(RequestDelegate next)
     {
-        this.interceptor = new Interceptor();
+        this.interceptor = new InterceptorToTXTFile();
         this._next = next;
     }
 
@@ -47,7 +47,8 @@ public class InterceptorMiddleware
         
 
         context.Request.Headers.Add("traceId", traceId);
-        interceptor.OnReceiveRequest(context.Request);
+        Request request = await Request.Convert(context.Request);
+        interceptor.OnReceiveRequest(request);
         context.Response.Headers.Add("traceId", traceId);
 
 
@@ -77,8 +78,11 @@ public class InterceptorMiddleware
             //gives the original body back
             context.Response.Body = originalbody;
         }
-        interceptor.OnSendResponse(context.Response, response_body);
+        Response response = await Response.Convert(context.Response, response_body);
+        interceptor.OnSendResponse(response);
     }
+
+    
 }
 
 

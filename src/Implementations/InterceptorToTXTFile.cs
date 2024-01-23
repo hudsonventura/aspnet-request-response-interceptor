@@ -32,12 +32,12 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
     }
 
 
-    HttpRequest request;
+    Request request;
     
     bool showTracerId = true;
 
 
-    public async void OnReceiveRequest(HttpRequest request)
+    public async void OnReceiveRequest(Request request)
     {
         showTracerId = options.WriteTraceIDBeforEachLine;
         startTime = DateTime.Now;
@@ -50,7 +50,7 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         this.request = request;
     }
 
-    private async Task WriteOutRequest(HttpRequest request)
+    private async Task WriteOutRequest(Request request)
     {
         var trace_id = (showTracerId == false) ? "": $"{traceId} - ";
 
@@ -61,8 +61,7 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         }
 
 
-        var body = await ReadRequestBody(request);
-        var bodyLines = string.Join(Environment.NewLine, body.Split('\n').Select(line => $"{trace_id}{line}"));
+        var bodyLines = string.Join(Environment.NewLine, request.Body.Split('\n').Select(line => $"{trace_id}{line}"));
 
         var endpointLine = $"{trace_id}{request.Method} {request.Host}{request.Path}{query}";
 
@@ -88,7 +87,7 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
 
 
 
-    public async void OnSendResponse(HttpResponse response, string body_string)
+    public async void OnSendResponse(Response response)
     {
         endTime = DateTime.Now;
         showTracerId = options.WriteTraceIDBeforEachLine;
@@ -99,29 +98,16 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         }
 
         
-        WriteOutResponse(response, body_string);
+        WriteOutResponse(response);
     }
 
-    private void WriteOutResponse(HttpResponse response, string original_response_body)
+    private void WriteOutResponse(Response response)
     {
         var totalTime = endTime - startTime;
         var trace_id = (showTracerId == false) ? "": $"{traceId} - ";
 
-        //get and format the body
-        string bodyLines = (original_response_body.Length > 0) ? original_response_body : "null";
-        if (response.Headers.ContainsKey("Content-Type") && response.Headers["Content-Type"].ToString().Contains("json"))
-        { //formata o json para ser identado
-            var settings = new JsonSerializerSettings
-            {
-                Formatting = Formatting.Indented // Define o formato como indentado (beautify)
-            };
 
-            // Serializa o objeto de volta para uma string JSON formatada
-            dynamic objetoDynamic = JsonConvert.DeserializeObject(original_response_body);
-            bodyLines = JsonConvert.SerializeObject(objetoDynamic, settings);
-
-        }
-        bodyLines = string.Join(Environment.NewLine, bodyLines.Split('\n').Select(line => $"{trace_id}{line}"));
+        var bodyLines = string.Join(Environment.NewLine, response.Body.Split('\n').Select(line => $"{trace_id}{line}"));
 
         string separator = $"{Environment.NewLine}{trace_id}RESPONSE at {endTime.ToString("yyyy/MM/dd HH:mm:ss:fff")} to {remoteIpAddress}, total time {totalTime.Seconds}s -------------------------------------------------------------{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
         var statusCodeLine = $"{trace_id}StatusCode: {response.StatusCode} - {(HttpStatusCode)response.StatusCode}";
@@ -144,23 +130,6 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
 
 
 
-
-    private async Task<string> ReadRequestBody(HttpRequest request)
-    {
-        // Configure o corpo da requisição para permitir a leitura posterior
-        request.EnableBuffering();
-
-        // Lê o corpo da requisição como uma string sem consumi-lo
-        using (StreamReader reader = new StreamReader(request.Body, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, bufferSize: 1024, leaveOpen: true))
-        {
-            string body = await reader.ReadToEndAsync();
-
-            // Volta ao início do fluxo para que o corpo possa ser lido novamente posteriormente
-            request.Body.Seek(0, SeekOrigin.Begin);
-
-            return (body.Length > 0) ? body : "null";
-        }
-    }
 
     
 }

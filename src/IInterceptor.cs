@@ -10,10 +10,10 @@ namespace RequestResponseInterceptor;
 public interface IInterceptor
 {
     // On complete receipt of the request, before starting processing by your controller
-    void OnReceiveRequest(HttpRequest request);
+    void OnReceiveRequest(Request request);
 
     // After processing your controller, before returning to client
-    void OnSendResponse(HttpResponse response, string body_string);
+    void OnSendResponse(Response response);
 
     // Set the IP
     void SetRemoteIP(IPAddress? remoteIpAddress);

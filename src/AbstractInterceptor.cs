@@ -9,14 +9,14 @@ namespace RequestResponseInterceptor;
 
 public abstract class AbstractInterceptor : IInterceptor
 {
-    public virtual void OnReceiveRequest(HttpRequest request)
+    public virtual void OnReceiveRequest(Request request)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("You have to implement your own interceptor. See doc at https://github.com/hudsonventura/aspnet-request-response-interceptor");
     }
 
-    public virtual void OnSendResponse(HttpResponse response, string body_string)
+    public virtual void OnSendResponse(Response response)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("You have to implement your own interceptor. See doc at https://github.com/hudsonventura/aspnet-request-response-interceptor");
     }
 
     public IPAddress remoteIpAddress {get; protected set;}
