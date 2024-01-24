@@ -1,5 +1,5 @@
 # RequestResponseInterceptor
-Nuget middleware for ASP.NET Core package to intercept request before send do controller and response before send to client. This is useful to automatically log requests and responses, for example. An implementations was made and it can log method, url, endpoint, header, query, body, status code, both the request and the response.
+
 
 <div align="center">
 
@@ -7,18 +7,28 @@ Nuget middleware for ASP.NET Core package to intercept request before send do co
 
 </div>
 
-## File Program.cs (net6.0)
+Nuget middleware for ASP.NET Core package to intercept request before send do controller and response before send to client. This is useful to automatically log requests and responses, for example. Two implementations were made, one to save request and response in a TXT file and another to send the data to ElasticSearch / Elastic Stack. Additionally, you can create `your own implementation`.  
+
+## Get Starting
+
+Install the lib
+```bash
+dotnet add package RequestResponseInterceptor
+```
+
+In the ile Program.cs (net6.0) put this for all use cases.
 
 ```C#
 using RequestResponseInterceptor;
-using RequestResponseInterceptor.Implementations; //If you want to use my implmentation. If you will create yours, you can remove this.
+...
+app.UseInterceptor();
+```  
 
-```
-
-
-Using my class Interceptor (you can create your own. See on section [How can I create my own Interceptor](#How-can-I-create-my-own-Interceptor))
+### How to log request and response to TXT file?
 
 ```C#
+using RequestResponseInterceptor.Implementations;
+...
 InterceptorOptions options = new InterceptorOptions(){
     //If you are using docker container logs, leave it enabled. It is going to agrupate whole request and reponse line and will write to logs in the end
     WriteRequestAndResponseTogetherInTheEnd = true, //default true
@@ -27,29 +37,19 @@ InterceptorOptions options = new InterceptorOptions(){
     //Look the image below. This is the data highlighted in yellow
     WriteTraceIDBeforEachLine = true,  //default true
 };
-IInterceptor interceptor = new Interceptor(options);
+IInterceptor interceptor = new InterceptorToTXTFile(options);
 app.UseInterceptor(interceptor);
 
 ```
 
 
-or this to default values of InterceptorOptions
+or just this to default values of InterceptorOptions
 ```C#
-IInterceptor interceptor = new Interceptor();
+using RequestResponseInterceptor.Implementations;
+...
+IInterceptor interceptor = new InterceptorToTXTFile();
 app.UseInterceptor(interceptor);
 ```
-
-
-
-or just
-```C#
-app.UseInterceptor();
-```
-
-
-
-
-### What it will do?
 
 It will write to **console** and a **log file** (dir logs) all data of request and response, like this:
 
@@ -57,82 +57,45 @@ It will write to **console** and a **log file** (dir logs) all data of request a
 ![Print](https://raw.githubusercontent.com/hudsonventura/aspnet-request-response-interceptor/main/assets/print1.png)
 
 
+But you don't need to use my class Interceptor to write to file, you can create your own. See on section [How can I create my own Interceptor](#How-can-I-create-my-own-Interceptor))
 
-But you don't need to use my implementation. So you can create your own classe to log by you way.  
-In this case, just implements the interface `RequestResponseInterceptor.IInterceptor`.  
+---
 
-``` C#
-public interface IInterceptor
-{
-    // On complete receipt of the request, before starting processing by your controller
-    void OnReceiveRequest(HttpRequest request);
-
-    // After processing your controller, before returning to client
-    void OnSendResponse(HttpResponse response, string body_string);
-
-    // Set the IP
-    void SetRemoteIP(IPAddress? remoteIpAddress);
-
-    // Set TraceId for each request
-    void SetTraceId(string traceId);
-}
-```
-
-An a example of my implementation is at file `src.Implementations.Interceptor.cs`. You can use it to get inspired and create your own implementation, saving data to disk, database, or calling other services.  
-
-# How can I create my own Interceptor?
-
-First, create a class and it implement the `RequestResponseInterceptor.IInterceptor` interface, like below.
+### How to log request and response to ElasticSearch / Elastic Stack?
 
 ```C#
-using System.Net;
-using RequestResponseInterceptor;
-
-namespace YourNameSpace;
-
-public class YourClass : IInterceptor
-{
-    public void OnReceiveRequest(HttpRequest request)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnSendResponse(HttpResponse response, string body_string)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void SetRemoteIP(IPAddress? remoteIpAddress)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void SetTraceId(string traceId)
-    {
-        throw new NotImplementedException();
-    }
-}
+using RequestResponseInterceptor.Implementations;
+...
+IInterceptor interceptor = new InterceptorToElastic("http://localhost:9200", "YOUR_ELASTIC_INDEX");
+app.UseInterceptor(interceptor);
 ```
 
+After add your index, go to Kibana > Discovery.  
+
+![Print](assets/kibana_print.png)  
+
+Change to your index.  
+
+![Print](assets/kibana_print2.png)
+
+You will find your request and response  
+
+![Print](assets/log_elastic.png)
 
 
-Now you have to implement each function. If you don't want to use `SetTraceId` or `SetRemoteIP`, just add return like below. These are not necessary.
+---
 
-```C#
-    public void SetRemoteIP(IPAddress? remoteIpAddress)
-    {
-        return;
-    }
+### How can I create my own Interceptor? Building your own logger.
 
-    public void SetTraceId(string traceId)
-    {
-        return;
-    }
-```
+You don't need to use my implementations. So you can create your own classe to log by you way.  
+In this case, create a class and it implement the `IInterceptor` interface and inherit the class `AbstractInterceptor`, like below.
 
 
-Or you can just implement the abstract class `AbstractInterceptor`, and implement the functions `OnReceiveRequest` and `OnSendResponse`, as below.  
-The `remoteIpAddress` and `SetTraceId` functions have been implemented for you.
+
+
+Now you have to implement the functions `OnReceiveRequest` and `OnSendResponse`, as below.  
+As a gift you will receive the variables `remoteIpAddress` (the ip of client requester) and `TraceId` (the request id that will be in the request and response header)
+
 ``` C#
 using RequestResponseInterceptor;
 
@@ -140,12 +103,12 @@ namespace Example;
 
 public class MyInterceptor : AbstractInterceptor, IInterceptor
 {
-    public override void OnReceiveRequest(HttpRequest request)
+    public override void OnReceiveRequest(Request request)
     {
         throw new NotImplementedException();
     }
 
-    public override void OnSendResponse(HttpResponse response, string body_string)
+    public override void OnSendResponse(Response response)
     {
         throw new NotImplementedException();
     }
@@ -159,5 +122,5 @@ YourClass interceptor = new YourClass();
 app.UseInterceptor(interceptor);
 ```
 
-This plugin will call your funcion `OnReceiveRequest` befor call your controller, and after the processing before send data to client (requester), it will call your funciont `OnSendResponse`.  
+This lib will call your funcion `OnReceiveRequest` befor call your controller, and after the processing, before send data to client (requester), it will call the function `OnSendResponse`.  
 The funcionts `SetRemoteIP` and `SetTraceId` will call before `OnReceiveRequest`.

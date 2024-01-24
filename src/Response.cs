@@ -11,6 +11,17 @@ public class Response
     public Dictionary<string, string> Headers { get; private set; }
     public string Body { get; private set; }
 
+    public Exception Exception  { get; private set; }
+
+    internal static async Task<Response> Convert(HttpResponse response, Exception error){
+        return new Response(){
+            StatusCode = response.StatusCode,
+            ReasonPhrase = ((HttpStatusCode)response.StatusCode).ToString(),
+            Headers = response.Headers.ToDictionary(q => q.Key, q => q.Value.ToString()),
+            Exception = error
+        };
+    }
+
     internal static async Task<Response> Convert(HttpResponse response, string body)
     {
         string bodyLines = (body.Length > 0) ? body : "null";
@@ -35,7 +46,5 @@ public class Response
             Headers = response.Headers.ToDictionary(q => q.Key, q => q.Value.ToString()),
             Body = bodyLines,
         };
-
-        
     }
 }

@@ -64,22 +64,46 @@ public class InterceptorMiddleware
             {
                 context.Response.Body = memstream;
 
-                await _next(context);
+                
+                try
+                {
+                    await _next(context);
+    
+                    memstream.Position = 0;
+                    response_body = new StreamReader(memstream).ReadToEnd();
+    
+                    memstream.Position = 0;
+                    await memstream.CopyToAsync(originalbody);
 
-                memstream.Position = 0;
-                response_body = new StreamReader(memstream).ReadToEnd();
+                    //gives the original body back
+                    context.Response.Body = originalbody;
+                    Response response = await Response.Convert(context.Response, response_body);
+                    interceptor.OnSendResponse(response);
+                }
+                catch (System.Exception error)
+                {
+                    memstream.Position = 0;
+                    response_body = new StreamReader(memstream).ReadToEnd();
+    
+                    memstream.Position = 0;
+                    await memstream.CopyToAsync(originalbody);
 
-                memstream.Position = 0;
-                await memstream.CopyToAsync(originalbody);
+                    //gives the original body back
+                    context.Response.Body = originalbody;
+                    context.Response.StatusCode = 500;
+
+                    Response response = await Response.Convert(context.Response, error);
+                    interceptor.OnSendResponse(response);
+
+                    throw;
+                }
             }
         }
         finally
         {
-            //gives the original body back
-            context.Response.Body = originalbody;
+            
         }
-        Response response = await Response.Convert(context.Response, response_body);
-        interceptor.OnSendResponse(response);
+        
     }
 
     

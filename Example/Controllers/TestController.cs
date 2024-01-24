@@ -32,4 +32,10 @@ public class TestController : ControllerBase
     {
         return Ok(teste);
     }
+
+    [HttpPost("/Test500")]
+    public IActionResult Test500()
+    {
+        throw new Exception("Wrong error");
+    }
 }

@@ -55,4 +55,11 @@ public class UnitTest1
 
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);
     }
+
+    [Fact]
+    public async Task Test500() 
+    {
+        var result = await client.PostAsync($"/Test500", GenerateContent());
+        Assert.Equal(HttpStatusCode.InternalServerError, result.StatusCode);
+    }
 }

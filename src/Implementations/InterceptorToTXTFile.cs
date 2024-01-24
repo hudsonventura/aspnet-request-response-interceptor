@@ -23,9 +23,6 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         this.options = new InterceptorOptions();
     }
 
-    //to write the log on a file, database or anywhere
-    LogWriter writer = new LogWriter();
-
     InterceptorOptions options;
     public InterceptorToTXTFile(InterceptorOptions options){
         this.options = options;
@@ -75,8 +72,8 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         Console.WriteLine(separator);
         Console.WriteLine(log);
 
-        writer.WriteLog(separator);
-        writer.WriteLog(log);
+        WriteLog(separator);
+        WriteLog(log);
     }
 
 
@@ -118,14 +115,33 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         Console.WriteLine(log);
         Console.WriteLine(separator);
 
-        writer.WriteLog(log);
-        writer.WriteLog(separator);
+        WriteLog(log);
+        WriteLog(separator);
     }
 
 
 
 
+    private void WriteLog(string logMessage)
+    {
+        // Obtenha o diretório corrente
+        string currentDirectory = Directory.GetCurrentDirectory();
 
+        // Crie um subdiretório para o mês atual
+        string monthDirectory = Path.Combine(currentDirectory, "logs");
+
+        // Verifique se o subdiretório já existe, se não, crie
+        if (!Directory.Exists(monthDirectory))
+        {
+            Directory.CreateDirectory(monthDirectory);
+        }
+
+        // Crie um nome de arquivo com base na data e hora atual
+        string fileName = Path.Combine(monthDirectory, $"{DateTime.Now.ToString("yyyy-MM-dd")}.log");
+
+        // Escreva o log no arquivo, fazendo um append ao conteúdo existente
+        File.AppendAllText(fileName, logMessage);
+    }
 
 
 
