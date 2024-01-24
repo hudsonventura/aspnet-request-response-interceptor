@@ -72,15 +72,15 @@ app.UseInterceptor(interceptor);
 
 After add your index, go to Kibana > Discovery.  
 
-![Print](assets/kibana_print.png)  
+![Print](https://raw.githubusercontent.com/hudsonventura/aspnet-request-response-logger/main/assets/kibana_print.png)  
 
 Change to your index.  
 
-![Print](assets/kibana_print2.png)
+![Print](https://raw.githubusercontent.com/hudsonventura/aspnet-request-response-logger/main/assets/kibana_print2.png)
 
 You will find your request and response  
 
-![Print](assets/log_elastic.png)
+![Print](https://raw.githubusercontent.com/hudsonventura/aspnet-request-response-logger/main/assets/log_elastic.png)
 
 
 ---
