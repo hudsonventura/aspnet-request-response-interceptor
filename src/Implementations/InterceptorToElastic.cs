@@ -19,16 +19,23 @@ public class InterceptorToElastic : AbstractInterceptor, IInterceptor
     public InterceptorToElastic(string host)
     {
         this.host = host;
-        this.index = "RequestResponseInterceptor.InterceptorToElastic";
+        this.index = "RequestResponseInterceptor";
         client = new HttpClient();
     }
 
-    public InterceptorToElastic(string host, string index)
+    public InterceptorToElastic(string host, string index, string authorization = null)
     {
         this.host = host;
         this.index = index;
         client = new HttpClient();
+        if(authorization is not null){
+            client.DefaultRequestHeaders.Add("Authorization", authorization);
+        }
+        
     }
+
+
+
 
     Request request;
     public override async void OnReceiveRequest(Request request)
@@ -81,25 +88,10 @@ public class InterceptorToElastic : AbstractInterceptor, IInterceptor
             // Fazer uma solicitação POST
             HttpResponseMessage responseElastic = await client.PostAsync(apiUrl, content);
 
-            // Verificar se a solicitação foi bem-sucedida
-            if (responseElastic.IsSuccessStatusCode)
-            {
-                // Ler o conteúdo da resposta como uma string
-                string responseBody = await responseElastic.Content.ReadAsStringAsync();
-                Console.WriteLine("Resposta da API:");
-                Console.WriteLine(responseBody);
-            }
-            else
-            {
-                Console.WriteLine($"Erro na solicitação: {responseElastic.StatusCode} - {responseElastic.ReasonPhrase}");
-                string responseBody = await responseElastic.Content.ReadAsStringAsync();
-                Console.WriteLine("Resposta da API:");
-                Console.WriteLine(responseBody);
-            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao fazer a solicitação: {ex.Message}");
+            //Console.WriteLine($"Erro ao fazer a solicitação: {ex.Message}");
         }
     }
 

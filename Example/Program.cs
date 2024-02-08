@@ -31,7 +31,7 @@ InterceptorOptions options = new InterceptorOptions(){
     //If you are using docker container logs, leave it enabled. It will be easier to search by 'traceId'
     WriteTraceIDBeforEachLine = true, 
 };
-IInterceptor elastic = new InterceptorToElastic("http://localhost:9200", "testes_com_dictionary2");
+IInterceptor elastic = new InterceptorToElastic("http://localhost:9200", "your_index", "Basic yourAuthorization");
 IInterceptor txt = new InterceptorToTXTFile(options);
 app.UseInterceptor(txt);
 
