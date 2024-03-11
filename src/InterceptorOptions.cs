@@ -23,4 +23,8 @@ public class InterceptorOptions
     /// </summary>
     public bool LogGetRequest { get; set; } = false;
 
+    /// <summary>
+    /// Location to store log files. Default is the same directory of application (Directory.GetCurrentDirectory()))
+    /// </summary>
+    public string LogLocation { get; set; } = Directory.GetCurrentDirectory();
 }

@@ -26,12 +26,19 @@ var app = builder.Build();
 
 InterceptorOptions options = new InterceptorOptions(){
     //If you are using docker container logs, leave it enabled. It is going to agrupate whole request and reponse line and will write to logs in the end
-    WriteRequestAndResponseTogetherInTheEnd = false, 
+    WriteRequestAndResponseTogetherInTheEnd = true, 
 
     //If you are using docker container logs, leave it enabled. It will be easier to search by 'traceId'
     WriteTraceIDBeforEachLine = true, 
+
+    //Able to log the get requests. Default is false.
+    LogGetRequest = false,
+
+    //Location to store log files. Default is the same directory of application (Directory.GetCurrentDirectory()))
+    LogLocation = Directory.GetCurrentDirectory()
 };
-IInterceptor elastic = new InterceptorToElastic("http://localhost:9200", "your_index", "Basic yourAuthorization");
+
+IInterceptor elastic = new InterceptorToElastic("http://localhost:9200", "your_index", "Basic yourAuthorization", options);
 IInterceptor txt = new InterceptorToTXTFile(options);
 app.UseInterceptor(txt);
 

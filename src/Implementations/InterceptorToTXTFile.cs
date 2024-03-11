@@ -89,7 +89,7 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         if(options.LogGetRequest == false && request.Method == "GET"){
             return;
         }
-        
+
         endTime = DateTime.Now;
         showTracerId = options.WriteTraceIDBeforEachLine;
         
@@ -133,7 +133,7 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
     private void WriteLog(string logMessage)
     {
         // Obtenha o diretório corrente
-        string currentDirectory = Directory.GetCurrentDirectory();
+        string currentDirectory = options.LogLocation;
 
         // Crie um subdiretório para o mês atual
         string monthDirectory = Path.Combine(currentDirectory, "logs");
@@ -145,7 +145,7 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         }
 
         // Crie um nome de arquivo com base na data e hora atual
-        string fileName = Path.Combine(monthDirectory, $"{DateTime.Now.ToString("yyyy-MM-dd")}.log");
+        string fileName = Path.Combine(monthDirectory, $"RequestResponseInterceptor-{DateTime.Now.ToString("yyyy-MM-dd")}.log");
 
         // Escreva o log no arquivo, fazendo um append ao conteúdo existente
         File.AppendAllText(fileName, logMessage);
