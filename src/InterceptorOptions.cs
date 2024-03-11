@@ -16,4 +16,11 @@ public class InterceptorOptions
     /// If you are using docker container logs, leave it enabled. It will be easier to search by 'traceId'
     /// </summary>
     public bool WriteTraceIDBeforEachLine { get; set; } = true;
+
+
+    /// <summary>
+    /// Able to log the get requests. Default is false.
+    /// </summary>
+    public bool LogGetRequest { get; set; } = false;
+
 }

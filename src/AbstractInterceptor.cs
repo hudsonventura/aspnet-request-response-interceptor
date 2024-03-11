@@ -9,6 +9,17 @@ namespace RequestResponseInterceptor;
 
 public abstract class AbstractInterceptor : IInterceptor
 {
+    protected AbstractInterceptor()
+    {
+    }
+
+    protected InterceptorOptions options;
+    protected AbstractInterceptor(InterceptorOptions options)
+    {
+        this.options = options;
+    }
+
+    protected Request request;
     public virtual void OnReceiveRequest(Request request)
     {
         throw new NotImplementedException("You have to implement your own interceptor. See doc at https://github.com/hudsonventura/aspnet-request-response-interceptor");

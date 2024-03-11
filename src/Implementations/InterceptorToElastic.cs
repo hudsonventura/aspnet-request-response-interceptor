@@ -15,6 +15,7 @@ public class InterceptorToElastic : AbstractInterceptor, IInterceptor
     HttpClient client;
     string host;
     string index;
+    InterceptorOptions options;
 
     public InterceptorToElastic(string host)
     {
@@ -23,7 +24,7 @@ public class InterceptorToElastic : AbstractInterceptor, IInterceptor
         client = new HttpClient();
     }
 
-    public InterceptorToElastic(string host, string index, string authorization = null)
+    public InterceptorToElastic(string host, string index, string authorization = null, InterceptorOptions options = null)
     {
         this.host = host;
         this.index = index;
@@ -31,7 +32,7 @@ public class InterceptorToElastic : AbstractInterceptor, IInterceptor
         if(authorization is not null){
             client.DefaultRequestHeaders.Add("Authorization", authorization);
         }
-        
+        this.options = options;
     }
 
 
@@ -45,6 +46,10 @@ public class InterceptorToElastic : AbstractInterceptor, IInterceptor
 
     public override async void OnSendResponse(Response response)
     {
+        if(options.LogGetRequest == false && request.Method == "GET"){
+            return;
+        }
+        
         try
         {
             string apiUrl = $"{host}/{index}/_doc";

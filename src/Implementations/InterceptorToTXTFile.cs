@@ -24,12 +24,12 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
     }
 
     InterceptorOptions options;
-    public InterceptorToTXTFile(InterceptorOptions options){
+    public InterceptorToTXTFile(InterceptorOptions options) : base(options)
+    {
         this.options = options;
     }
 
 
-    Request request;
     
     bool showTracerId = true;
 
@@ -86,6 +86,10 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
 
     public async void OnSendResponse(Response response)
     {
+        if(options.LogGetRequest == false && request.Method == "GET"){
+            return;
+        }
+        
         endTime = DateTime.Now;
         showTracerId = options.WriteTraceIDBeforEachLine;
         
@@ -104,7 +108,11 @@ public class InterceptorToTXTFile : AbstractInterceptor, IInterceptor
         var trace_id = (showTracerId == false) ? "": $"{traceId} - ";
 
 
-        var bodyLines = string.Join(Environment.NewLine, response.Body.Split('\n').Select(line => $"{trace_id}{line}"));
+        string bodyLines = "";
+        if(response.Body != null){
+            bodyLines = string.Join(Environment.NewLine, response.Body.Split('\n').Select(line => $"{trace_id}{line}"));
+        }
+        
 
         string separator = $"{Environment.NewLine}{trace_id}RESPONSE at {endTime.ToString("yyyy/MM/dd HH:mm:ss:fff")} to {remoteIpAddress}, total time {totalTime.Seconds}s -------------------------------------------------------------{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
         var statusCodeLine = $"{trace_id}StatusCode: {response.StatusCode} - {(HttpStatusCode)response.StatusCode}";
