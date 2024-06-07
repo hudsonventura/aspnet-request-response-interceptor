@@ -78,7 +78,10 @@ public class InterceptorMiddleware
                     //gives the original body back
                     context.Response.Body = originalbody;
                     Response response = await Response.Convert(context.Response, response_body);
-                    interceptor.OnSendResponse(response);
+
+                    bool register = (context.Items.ContainsKey("IgnoreInterceptor") && bool.Parse(context.Items["IgnoreInterceptor"].ToString())) ? false : true;
+                    if(register)
+                        interceptor.OnSendResponse(response);
                 }
                 catch (System.Exception error)
                 {
@@ -93,7 +96,10 @@ public class InterceptorMiddleware
                     context.Response.StatusCode = 500;
 
                     Response response = await Response.Convert(context.Response, error);
-                    interceptor.OnSendResponse(response);
+
+                    bool register = (context.Items.ContainsKey("IgnoreInterceptor") && bool.Parse(context.Items["IgnoreInterceptor"].ToString())) ? false : true;
+                    if(register)
+                        interceptor.OnSendResponse(response);
 
                     throw;
                 }

@@ -124,3 +124,19 @@ app.UseInterceptor(interceptor);
 
 This lib will call your funcion `OnReceiveRequest` befor call your controller, and after the processing, before send data to client (requester), it will call the function `OnSendResponse`.  
 The funcionts `SetRemoteIP` and `SetTraceId` will call before `OnReceiveRequest`.
+
+### How can I ignore request into a controller?.
+Just add `HttpContext.Items["IgnoreInterceptor"] = true;` on your controle like below. If you put a different value from `true`, the logger will not ignore.
+
+``` C#
+[ApiController]
+public class ExampleController : ControllerBase
+{
+    [HttpGet("/Endpoint")]
+    public IActionResult Endpoint()
+    {
+        HttpContext.Items["IgnoreInterceptor"] = true;
+        return Ok();
+    }
+}
+```

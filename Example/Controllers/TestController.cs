@@ -12,12 +12,14 @@ public class TestController : ControllerBase
     [HttpGet("/RequestEmptyBody_ResponseEmptyBody")]
     public IActionResult RequestEmptyBody_ResponseEmptyBody()
     {
+        HttpContext.Items["IgnoreInterceptor"] = false;
         return Ok();
     }
 
     [HttpPost("/RequestEmptyBody_ResponseWithSomeBody")]
     public IActionResult RequestEmptyBody_ResponseWithSomeBody()
     {
+        HttpContext.Items["IgnoreInterceptor"] = true;
         return Ok("Ok");
     }
 

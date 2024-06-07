@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>RequestResponseInterceptor</PackageId>
-    <Version>1.1.1</Version>
+    <Version>1.1.3</Version>
     <Authors>Hudson Ventura</Authors>
     <Company>Hudson Ventura</Company>
     <PackageDescription>Nuget middleware package to intercept request before send do controller and response before send to cliente. This is util to automatically log requests and responses. An implementations was made and it can log method, url, endpoint, header, query, body, status code, both the request and the response.</PackageDescription>
